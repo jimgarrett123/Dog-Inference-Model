@@ -1,0 +1,35 @@
+https://medium.com/analytics-vidhya/deploy-your-first-deep-learning-model-on-kubernetes-with-python-keras-flask-and-docker-575dc07d9e76
+
+change into keras-app directory 
+
+ensure docker/kubernetes are running 
+
+Docker Only 
+cd ./keras-app
+sudo docker run -d -p 5000:5000 keras-app
+curl -X POST -F image=@dog.jpeg 'http://localhost:5000/predict'
+{"predictions":[{"label":"beagle","probability":0.9889711737632751},{"label":"pot","probability":0.0015624354127794504},{"label":"Cardigan","probability":0.0013716925168409944},{"label":"Walker_hound","probability":0.0011122053256258368},{"label":"Brittany_spaniel","probability":0.000984092359431088}],"success":true}
+
+
+Deploy K8s: 
+kubectl run keras-app --image=andrewwg/keras-app --port 5000
+kubectl expose deployment keras-app --type=LoadBalancer --port 80 --target-port 5000
+kubectl get svc
+
+Deploy Minikube
+kubectl run keras-app --image=andrewwg/keras-app --port 5000
+kubectl expose pod keras-app --port 80 --target-port 5000 
+kubectl get svc
+minikube service <service-name> --url
+
+curl -X POST -F image=@dog.jpeg 'http://http://127.0.0.1:51262/predict'
+
+Deploy OpenShift (ROSA)
+oc newproject keras-app
+oc run keras-app --image=andrewwg/keras-app --port 5000
+oc expose pod keras-app --port 80 --target-port 5000 
+oc get svc
+oc get ingresses.config/cluster -o jsonpath={.spec.domain}
+
+example route: http://keras-default.apps.rosa-rrtdp.bmcz.p1.openshiftapps.com
+curl -X POST -F image=@dog.jpeg 'http://keras-default.apps.rosa-rrtdp.bmcz.p1.openshiftapps.com/predict'

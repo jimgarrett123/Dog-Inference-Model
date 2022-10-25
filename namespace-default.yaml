@@ -1,0 +1,19 @@
+kuapiVersion: v1
+kind: Namespace
+metadata:
+  annotations:
+    openshift.io/sa.scc.mcs: s0:c7,c4
+    openshift.io/sa.scc.supplemental-groups: 1000050000/10000
+    openshift.io/sa.scc.uid-range: 1000050000/10000
+  creationTimestamp: "2022-10-23T11:41:31Z"
+  labels:
+    kubernetes.io/metadata.name: default
+    name: default
+  name: default
+  resourceVersion: "30209"
+  uid: a6991484-1fff-4e7b-9971-df66fd05cc3b
+spec:
+  finalizers:
+  - kubernetes
+status:
+  phase: Active
