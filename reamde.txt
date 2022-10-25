@@ -1,0 +1,55 @@
+Instructions: https://www.digitalocean.com/community/tutorials/how-to-use-minikube-for-local-kubernetes-development-and-testing#part-2-accessing-the-kubernetes-dashboard
+
+minikube dashboard
+
+Test Deployment: 
+kubectl create deployment web --image=gcr.io/google-samples/hello-app:1.0
+kubectl expose deployment web --type=NodePort --port=8080
+kubectl get service web
+minikube service web --url
+
+minikube mount $HOME:/host
+
+ArgoCD Deploy  to K8s
+Deploy ArgoCD: https://www.digitalocean.com/community/tutorials/how-to-deploy-to-kubernetes-using-argo-cd-and-gitops
+kubectl create namespace argocd
+kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+watch kubectl get pods -n argocd
+Kubectl get svc
+kubectl port-forward svc/argocd-server -n argocd 8080:443
+
+http://localhost:8080
+brew install argocd
+kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d; echo
+
+argocd login localhost:8080
+
+Deploy Sample Guest book
+argocd app create helm-guestbook --repo https://github.com/argoproj/argocd-example-apps.git --path helm-guestbook --dest-server https://kubernetes.default.svc --dest-namespace default
+argocd app sync helm-guestbook
+<validate Argo shows deployed>
+
+kubectl port-forward svc/helm-guestbook 9090:80
+localhost:9090
+
+TOBS Monitoring stack: 
+https://www.digitalocean.com/community/tutorials/how-to-set-up-tobs-the-observability-stack-for-kubernetes-monitoring
+head ~/.kube/config
+
+Install Cert Manager
+kubectl apply -f https://github.com/cert-manager/cert-manager/releases/download/v1.10.0/cert-manager.yaml
+
+
+https://github.com/timescale/tobs/blob/main/chart/README.md
+brew install helm
+kubectl create namespace observability
+helm repo add timescale https://charts.timescale.com/
+helm repo update
+helm install --wait tobs timescale/tobs --namespace observability
+
+kubectl -n observability get pods
+
+
+Sensu Demo: https://github.com/sensu/sensu-kube-demo
+
+
