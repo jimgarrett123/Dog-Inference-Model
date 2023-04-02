@@ -1,55 +1,55 @@
-Instructions: https://www.digitalocean.com/community/tutorials/how-to-use-minikube-for-local-kubernetes-development-and-testing#part-2-accessing-the-kubernetes-dashboard
-
-minikube dashboard
-
-Test Deployment: 
-kubectl create deployment web --image=gcr.io/google-samples/hello-app:1.0
-kubectl expose deployment web --type=NodePort --port=8080
-kubectl get service web
-minikube service web --url
-
-minikube mount $HOME:/host
-
-ArgoCD Deploy  to K8s
-Deploy ArgoCD: https://www.digitalocean.com/community/tutorials/how-to-deploy-to-kubernetes-using-argo-cd-and-gitops
-kubectl create namespace argocd
-kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
-watch kubectl get pods -n argocd
-Kubectl get svc
-kubectl port-forward svc/argocd-server -n argocd 8080:443
-
-http://localhost:8080
-brew install argocd
-kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d; echo
-
-argocd login localhost:8080
-
-Deploy Sample Guest book
-argocd app create helm-guestbook --repo https://github.com/argoproj/argocd-example-apps.git --path helm-guestbook --dest-server https://kubernetes.default.svc --dest-namespace default
-argocd app sync helm-guestbook
-<validate Argo shows deployed>
-
-kubectl port-forward svc/helm-guestbook 9090:80
-localhost:9090
-
-TOBS Monitoring stack: 
-https://www.digitalocean.com/community/tutorials/how-to-set-up-tobs-the-observability-stack-for-kubernetes-monitoring
-head ~/.kube/config
-
-Install Cert Manager
-kubectl apply -f https://github.com/cert-manager/cert-manager/releases/download/v1.10.0/cert-manager.yaml
+#Derived Keras-app AI inference instance deployable to ROSA. 
+#Original Medium Article base below. 
+Modified to local Docker (Mac) and Minikube/OpenShift/ROSA model. 
 
 
-https://github.com/timescale/tobs/blob/main/chart/README.md
-brew install helm
-kubectl create namespace observability
-helm repo add timescale https://charts.timescale.com/
-helm repo update
-helm install --wait tobs timescale/tobs --namespace observability
+https://medium.com/analytics-vidhya/deploy-your-first-deep-learning-model-on-kubernetes-with-python-keras-flask-and-docker-575dc07d9e76
 
-kubectl -n observability get pods
+change into keras-app directory 
 
+ensure docker/kubernetes are running 
 
-Sensu Demo: https://github.com/sensu/sensu-kube-demo
+Docker Only 
+cd ./keras-app
+sudo docker run -d -p 5000:5000 keras-app
+curl -X POST -F image=@dog.jpeg 'http://localhost:5000/predict'
+{"predictions":[{"label":"beagle","probability":0.9889711737632751},{"label":"pot","probability":0.0015624354127794504},{"label":"Cardigan","probability":0.0013716925168409944},{"label":"Walker_hound","probability":0.0011122053256258368},{"label":"Brittany_spaniel","probability":0.000984092359431088}],"success":true}
+
+#Alternatively pull from my image
+docker pull andrewwg/keras-app:latest
+
+Deploy Minikube/K8s: 
+kubectl run keras-app --image=andrewwg/keras-app --port 5000
+kubectl expose deployment keras-app --type=LoadBalancer --port 80 --target-port 5000
+kubectl get svc
+
+Deploy Minikube
+kubectl run keras-app --image=andrewwg/keras-app --port 5000
+kubectl expose pod keras-app --port 80 --target-port 5000 
+kubectl get svc
+minikube service <service-name> --url
+
+#infernce send image to IP: Image file must be local. 
+curl -X POST -F image=@dog.jpeg 'http://127.0.0.1:51262/predict'
+
+#Deploy OpenShift (ROSA) direct deployment: 
+oc new-project keras-app
+oc run keras-app --image=andrewwg/keras-app --port 5000
+oc expose pod keras-app --port 80 --target-port 5000 
+
+#Using GUI go to network and create route to the service: 
+#get your API url (unique to your cluster) 
+oc get svc
+oc get ingresses.config/cluster -o jsonpath={.spec.domain}
+
+#Sample output api URL "apps.lo0amzht.eastus.aroapp.io%"
+
+#Derive Route
+example route: http://keras-default.apps.rosa-rrtdp.bmcz.p1.openshiftapps.com%
+curl -X POST -F image=@dog.jpg 'http://keras-default.apps.rosa-rrtdp.bmcz.p1.openshiftapps.com/predict'
+
+curl -X POST -F image=@dog.jpg 'http://keras-default.apps.rosa-6l8s4.197s.p1.openshiftapps.com/predict'
+
+curl -X POST -F image=@dog.jpg 'https://api.rosa-f2vf5.rzo3.p1.openshiftapps.com:6443/predict'
 
 
