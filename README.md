@@ -1,4 +1,4 @@
-# Keras-app
+# AI Inference via a contanerized app called keras-app
 #Keras App is a datascience inference instance using Docker, Python, Keras and Tensorflow with Resnet 50 to identify dog breeds in images. 
 #Derived from medium article and deployed to OpenShift (ROSA)
 
@@ -6,6 +6,7 @@
 #Derived Keras-app AI inference instance deployable to ROSA. 
 #Original Medium Article base below. 
 #Modified to local Docker (Mac) and Minikube/OpenShift/ROSA model. 
+
 #https://medium.com/analytics-vidhya/deploy-your-first-deep-learning-model-on-kubernetes-with-python-keras-flask-and-docker-575dc07d9e76
 
 
