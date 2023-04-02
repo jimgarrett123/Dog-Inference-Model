@@ -1,3 +1,8 @@
+#Derived Keras-app AI inference instance deployable to ROSA. 
+#Original Medium Article base below. 
+Modified to local Docker (Mac) and Minikube/OpenShift/ROSA model. 
+
+
 https://medium.com/analytics-vidhya/deploy-your-first-deep-learning-model-on-kubernetes-with-python-keras-flask-and-docker-575dc07d9e76
 
 change into keras-app directory 
@@ -10,8 +15,10 @@ sudo docker run -d -p 5000:5000 keras-app
 curl -X POST -F image=@dog.jpeg 'http://localhost:5000/predict'
 {"predictions":[{"label":"beagle","probability":0.9889711737632751},{"label":"pot","probability":0.0015624354127794504},{"label":"Cardigan","probability":0.0013716925168409944},{"label":"Walker_hound","probability":0.0011122053256258368},{"label":"Brittany_spaniel","probability":0.000984092359431088}],"success":true}
 
+#Alternatively pull from my image
+docker pull andrewwg/keras-app:latest
 
-Deploy K8s: 
+Deploy Minikube/K8s: 
 kubectl run keras-app --image=andrewwg/keras-app --port 5000
 kubectl expose deployment keras-app --type=LoadBalancer --port 80 --target-port 5000
 kubectl get svc
@@ -22,14 +29,25 @@ kubectl expose pod keras-app --port 80 --target-port 5000
 kubectl get svc
 minikube service <service-name> --url
 
-curl -X POST -F image=@dog.jpeg 'http://http://127.0.0.1:51262/predict'
+#infernce send image to IP: Image file must be local. 
+curl -X POST -F image=@dog.jpeg 'http://127.0.0.1:51262/predict'
 
-Deploy OpenShift (ROSA)
-oc newproject keras-app
+#Deploy OpenShift (ROSA) direct deployment: 
+oc new-project keras-app
 oc run keras-app --image=andrewwg/keras-app --port 5000
 oc expose pod keras-app --port 80 --target-port 5000 
+
+#Using GUI go to network and create route to the service: 
+#get your API url (unique to your cluster) 
 oc get svc
 oc get ingresses.config/cluster -o jsonpath={.spec.domain}
 
-example route: http://keras-default.apps.rosa-rrtdp.bmcz.p1.openshiftapps.com
-curl -X POST -F image=@dog.jpeg 'http://keras-default.apps.rosa-rrtdp.bmcz.p1.openshiftapps.com/predict'
+#Sample output api URL "apps.lo0amzht.eastus.aroapp.io%"
+
+#Derive Route
+example route: http://keras-default.apps.rosa-rrtdp.bmcz.p1.openshiftapps.com%
+curl -X POST -F image=@dog.jpg 'http://keras-default.apps.rosa-rrtdp.bmcz.p1.openshiftapps.com/predict'
+
+curl -X POST -F image=@dog.jpg 'http://keras-default.apps.rosa-6l8s4.197s.p1.openshiftapps.com/predict'
+
+curl -X POST -F image=@dog.jpg 'https://api.rosa-f2vf5.rzo3.p1.openshiftapps.com:6443/predict'
