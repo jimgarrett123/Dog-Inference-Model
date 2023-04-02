@@ -12,4 +12,5 @@
 #https://medium.com/analytics-vidhya/deploy-your-first-deep-learning-model-on-kubernetes-with-python-keras-flask-and-docker-575dc07d9e76
 
 
-<img width="1209" alt="Screenshot 2023-04-01 at 8 13 42 PM" src="https://user-images.githubusercontent.com/48636570/229323733-5a18b5ad-f212-40be-b5f3-488f08618fd1.png">
+
+<img width="1209" alt="Screenshot 2023-04-02 at 8 33 21 AM" src="https://user-images.githubusercontent.com/48636570/229353426-345c7774-6306-4b57-8c32-a3fdc573146a.png">
