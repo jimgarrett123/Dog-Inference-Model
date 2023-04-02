@@ -46,8 +46,6 @@ oc get ingresses.config/cluster -o jsonpath={.spec.domain}
 
 #Derive Route
 example route: http://keras-default.apps.rosa-rrtdp.bmcz.p1.openshiftapps.com%
-curl -X POST -F image=@dog.jpg 'http://keras-default.apps.rosa-rrtdp.bmcz.p1.openshiftapps.com/predict'
-
-curl -X POST -F image=@dog.jpg 'http://keras-default.apps.rosa-6l8s4.197s.p1.openshiftapps.com/predict'
+curl -X POST -F image=@dog.jpg 'http://keras-default.apps.rosa-rrtdp.bmcz.p1.openshiftapps.com/predict
 
 curl -X POST -F image=@dog.jpg 'https://api.rosa-f2vf5.rzo3.p1.openshiftapps.com:6443/predict'
