@@ -7,7 +7,7 @@
 #Original Medium Article base below was different. 
 #Modified to local Docker (Mac) and Minikube/OpenShift/ROSA model. 
 
-# This uses Python, a Keras container, Tensoflow with the pre-trained Resnet50 image classification model. 
+# This uses Python, a Keras container, Tensorflow with the pre-trained Resnet50 image classification model. 
 
 #https://medium.com/analytics-vidhya/deploy-your-first-deep-learning-model-on-kubernetes-with-python-keras-flask-and-docker-575dc07d9e76
 
