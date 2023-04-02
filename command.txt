@@ -44,8 +44,11 @@ oc get ingresses.config/cluster -o jsonpath={.spec.domain}
 
 #Sample output api URL "apps.lo0amzht.eastus.aroapp.io%"
 
+#Create Route from ROSA Console 
+#Admin, Network, Select Project Keras-app, create route for keras app, rounte and get link to add below 
+
 #Derive Route
 example route: http://keras-default.apps.rosa-rrtdp.bmcz.p1.openshiftapps.com%
 curl -X POST -F image=@dog.jpg 'http://keras-default.apps.rosa-rrtdp.bmcz.p1.openshiftapps.com/predict
 
-curl -X POST -F image=@dog.jpg 'https://api.rosa-f2vf5.rzo3.p1.openshiftapps.com:6443/predict'
+curl -X POST -F image=@dog.jpg 'http://keras-app-keras-app.apps.rosa-xbjcs.lfis.p1.openshiftapps.com/predict'
