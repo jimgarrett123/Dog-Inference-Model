@@ -6,7 +6,7 @@
 # 	curl -X POST -F image=@dog.jpg 'http://localhost:5000/predict'
 
 # import the necessary packages
-from tensorflow..keras.applications import ResNet50
+from tensorflow.keras.applications import ResNet50
 from tensorflow.keras.preprocessing.image import img_to_array
 from tensorflow.keras.applications import imagenet_utils
 from PIL import Image
