@@ -61,7 +61,8 @@ def predict():
 			# classify the input image and then initialize the list
 			# of predictions to return to the client
 			with graph.as_default():
-				preds = model.predict(image)
+				preds = model.graph(image)
+#				preds = model.predict(image)
 				results = imagenet_utils.decode_predictions(preds)
 				data["predictions"] = []
 
