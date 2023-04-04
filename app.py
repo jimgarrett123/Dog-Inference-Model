@@ -27,6 +27,7 @@ def load_model():
 	model = ResNet50(weights="imagenet")
 	global graph
 	graph = tf.compat.v1.get_default_graph()
+	tf.compat.v1.disable_eager_execution()
 
 def prepare_image(image, target):
 	# if the image mode is not RGB, convert it
