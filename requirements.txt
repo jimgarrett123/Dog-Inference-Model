@@ -1,5 +1,5 @@
 keras
-tensorflow==1.9
+tensorflow
 flask
 gevent
 pillow
