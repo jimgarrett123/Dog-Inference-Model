@@ -48,7 +48,7 @@ def predict():
 	# initialize the data dictionary that will be returned from the
 	# view
 	data = {"success": False}
-        tf.compat.v1.disable_eager_execution()
+	tf.compat.v1.disable_eager_execution()
 
 	# ensure an image was properly uploaded to our endpoint
 	if flask.request.method == "POST":
