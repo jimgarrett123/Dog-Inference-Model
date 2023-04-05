@@ -14,9 +14,6 @@ import numpy as np
 import flask
 import io
 import tensorflow as tf
-#from tensorflow.python.framework.ops import disable_eager_execution
-
-#disable_eager_execution()
 
 # initialize our Flask application and the Keras model
 app = flask.Flask(__name__)
@@ -28,11 +25,8 @@ def load_model():
 	# substitute in your own networks just as easily)
 	global model
 	model = ResNet50(weights="imagenet")
-#	model.call = tf.function(model.call)
-#	tf.compat.v1.disable_eager_execution()
-
 	global graph
-	graph = tf.compat.v1.get_default_graph()
+	graph = tf.get_default_graph()
 
 def prepare_image(image, target):
 	# if the image mode is not RGB, convert it
