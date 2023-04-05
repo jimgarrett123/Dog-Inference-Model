@@ -14,9 +14,9 @@ import numpy as np
 import flask
 import io
 import tensorflow as tf
-from tensorflow.python.framework.ops import disable_eager_execution
+#from tensorflow.python.framework.ops import disable_eager_execution
 
-disable_eager_execution()
+#disable_eager_execution()
 
 # initialize our Flask application and the Keras model
 app = flask.Flask(__name__)
