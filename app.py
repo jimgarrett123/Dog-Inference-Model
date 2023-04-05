@@ -45,6 +45,7 @@ def prepare_image(image, target):
 
 @app.route("/predict", methods=["POST"])
 def predict():
+        tf.compat.v1.disable_eager_execution()
 	# initialize the data dictionary that will be returned from the
 	# view
 	data = {"success": False}
