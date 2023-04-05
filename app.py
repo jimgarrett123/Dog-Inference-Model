@@ -25,7 +25,9 @@ def load_model():
 	# substitute in your own networks just as easily)
 	global model
 	model = ResNet50(weights="imagenet")
-	model.call = tf.function(model.call)
+#	model.call = tf.function(model.call)
+	model.compat.v1.disable_eager_execution()
+
 	global graph
 	graph = tf.compat.v1.get_default_graph()
 
@@ -48,7 +50,6 @@ def predict():
 	# initialize the data dictionary that will be returned from the
 	# view
 	data = {"success": False}
-	tf.compat.v1.disable_eager_execution()
 
 	# ensure an image was properly uploaded to our endpoint
 	if flask.request.method == "POST":
